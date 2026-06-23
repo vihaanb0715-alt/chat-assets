@@ -18,7 +18,14 @@ async function loadPastMessages() {
     const msgDiv = document.getElementById('messages');
     data.forEach(msg => {
         const currentName = msg.name || "Anonymous";
-        msgDiv.innerHTML += `<p><b>${currentName}:</b> ${msg.text}</p>`;
+        
+        // Render either an image element or a text string
+        if (msg.text && msg.text.startsWith('[IMAGE_URL]:')) {
+            const imageUrl = msg.text.replace('[IMAGE_URL]:', '');
+            msgDiv.innerHTML += `<p><b>${currentName}:</b><br><img src="${imageUrl}" style="max-width: 200px; max-height: 200px; border-radius: 8px; margin-top: 5px; display: block;"></p>`;
+        } else {
+            msgDiv.innerHTML += `<p><b>${currentName}:</b> ${msg.text}</p>`;
+        }
     });
 
     // Automatically scroll to the bottom of the chat log
@@ -33,21 +40,86 @@ async function sendMessage() {
     await supabaseClient.from('messages').insert([
         { text: input.value, name: userName }
     ]);
+    
     input.value = '';
 }
 
 // Function to listen for new messages in real-time
 function startChatListening() {
     if (!document.getElementById('messages')) return;
-    
+
     supabaseClient
         .channel('schema-db-changes')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
             const msgDiv = document.getElementById('messages');
             const currentName = payload.new.name || "Anonymous";
-            
-            msgDiv.innerHTML += `<p><b>${currentName}:</b> ${payload.new.text}</p>`;
+            const currentText = payload.new.text || "";
+
+            // Render either an image element or a text string in real-time
+            if (currentText.startsWith('[IMAGE_URL]:')) {
+                const imageUrl = currentText.replace('[IMAGE_URL]:', '');
+                msgDiv.innerHTML += `<p><b>${currentName}:</b><br><img src="${imageUrl}" style="max-width: 200px; max-height: 200px; border-radius: 8px; margin-top: 5px; display: block;"></p>`;
+            } else {
+                msgDiv.innerHTML += `<p><b>${currentName}:</b> ${currentText}</p>`;
+            }
+
             msgDiv.scrollTop = msgDiv.scrollHeight;
         })
         .subscribe();
 }
+
+// NEW FUNCTION: Handle file picking, uploading to Storage, and database insertion
+async function uploadAndSendFile() {
+    const fileInput = document.getElementById('fileInput');
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) return;
+
+    const file = fileInput.files[0];
+    const msgDiv = document.getElementById('messages');
+
+    // 1. Inject a temporary loading element into the chat view
+    const loadingId = 'loading-' + Date.now();
+    msgDiv.innerHTML += `<p id="${loadingId}" style="color: #888; font-style: italic;"><b>${userName}:</b> 🔄 Uploading image...</p>`;
+    msgDiv.scrollTop = msgDiv.scrollHeight;
+
+    // 2. Generate a unique name for the image target
+    const fileExtension = file.name.split('.').pop();
+    const uniqueFileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExtension}`;
+
+    // 3. Send binary file data to your public 'chat-images' bucket
+    const { data, error: uploadError } = await supabaseClient.storage
+        .from('chat-images')
+        .upload(uniqueFileName, file);
+
+    if (uploadError) {
+        console.error('Upload failed:', uploadError.message);
+        alert('Failed to upload image.');
+        const loader = document.getElementById(loadingId);
+        if (loader) loader.remove();
+        fileInput.value = '';
+        return;
+    }
+
+    // 4. Extract public image link
+    const { data: urlData } = supabaseClient.storage
+        .from('chat-images')
+        .getPublicUrl(uniqueFileName);
+
+    const publicUrl = urlData.publicUrl;
+
+    // 5. Store image URL link inside your regular messages table
+    await supabaseClient.from('messages').insert([
+        { text: `[IMAGE_URL]:${publicUrl}`, name: userName }
+    ]);
+
+    // 6. Clean up the loader and reset file field
+    const loader = document.getElementById(loadingId);
+    if (loader) loader.remove();
+    fileInput.value = '';
+}
+
+// Optional Quality of Life: Listen for pressing "Enter" on text field
+document.getElementById('msgInput')?.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+});
