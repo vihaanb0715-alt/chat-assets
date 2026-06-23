@@ -1,0 +1,76 @@
+body { 
+    font-family: sans-serif; 
+    background: #f0f2f5; 
+    display: flex; 
+    justify-content: center; 
+    padding: 20px; 
+} 
+
+.chat-box { 
+    width: 350px; 
+    background: white; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+    padding: 15px; 
+} 
+
+#messages { 
+    overflow-y: auto; 
+    border: 1px solid #ddd; 
+    padding: 10px; 
+    margin-bottom: 10px; 
+    height: 300px; /* Fixed your original typo: 'hieght' */
+} 
+
+.input-area { 
+    display: flex; 
+    gap: 5px; 
+} 
+
+input { 
+    flex: 1; 
+    padding: 8px; 
+    border: 1px solid #ccc; /* Ensures a clean input border border outline */
+    border-radius: 4px;
+} 
+
+button { 
+    background: #0084ff; 
+    color: white; 
+    border: none; 
+    padding: 8px 12px; 
+    cursor: pointer; 
+    border-radius: 4px;
+}
+
+/* --- NEW ADDITIONS FOR IMAGE SHARING AND LOADING STATES --- */
+
+/* Style for chat images to ensure they stay constrained within the box wrapper */
+#messages img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin-top: 5px;
+    display: block;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+/* Subtle styling for paragraph elements containing images */
+#messages p {
+    margin: 8px 0;
+    line-height: 1.4;
+}
+
+/* Styling for the temporary loading indicator message card */
+#messages p[id^="loading-"] {
+    color: #777777;
+    font-style: italic;
+    animation: chatLoadingPulse 1.5s infinite ease-in-out;
+}
+
+/* Smooth pulsing fade effect for the upload process text */
+@keyframes chatLoadingPulse {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
