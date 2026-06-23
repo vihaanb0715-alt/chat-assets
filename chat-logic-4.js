@@ -71,9 +71,12 @@ function startChatListening() {
 // NEW FUNCTION: Handle file picking, uploading to Storage, and database insertion
 async function uploadAndSendFile() {
     const fileInput = document.getElementById('fileInput');
+    
+    // Safety check: Make sure a file is actually chosen
     if (!fileInput || !fileInput.files || fileInput.files.length === 0) return;
-
-    const file = fileInput.files[0];
+    
+    // FIX: Target the first file object explicitly instead of the entire list array
+    const file = fileInput.files[0]; 
     const msgDiv = document.getElementById('messages');
 
     // 1. Inject a temporary loading element into the chat view
@@ -81,7 +84,7 @@ async function uploadAndSendFile() {
     msgDiv.innerHTML += `<p id="${loadingId}" style="color: #888; font-style: italic;"><b>${userName}:</b> 🔄 Uploading image...</p>`;
     msgDiv.scrollTop = msgDiv.scrollHeight;
 
-    // 2. Generate a unique name for the image target
+    // 2. Generate a unique name for the image target to prevent duplicate naming bugs
     const fileExtension = file.name.split('.').pop();
     const uniqueFileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExtension}`;
 
@@ -91,8 +94,10 @@ async function uploadAndSendFile() {
         .upload(uniqueFileName, file);
 
     if (uploadError) {
-        console.error('Upload failed:', uploadError.message);
-        alert('Failed to upload image.');
+        console.error('Upload failed details:', uploadError.message);
+        alert('Failed to upload image: ' + uploadError.message);
+        
+        // Remove the loading indicator text if the upload fails
         const loader = document.getElementById(loadingId);
         if (loader) loader.remove();
         fileInput.value = '';
@@ -111,7 +116,7 @@ async function uploadAndSendFile() {
         { text: `[IMAGE_URL]:${publicUrl}`, name: userName }
     ]);
 
-    // 6. Clean up the loader and reset file field
+    // 6. Clean up the loader and reset file field for the next image
     const loader = document.getElementById(loadingId);
     if (loader) loader.remove();
     fileInput.value = '';
