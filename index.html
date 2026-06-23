@@ -23,9 +23,17 @@
     <script>
         // Connect to your specific Supabase project
         const supabaseClient = supabase.createClient('https://jcltdxcktlozphuhzaej.supabase.co', 'sb_publishable_UOhQfo-Myd8p_wTC9JdgOg_PUywAd7K');
+
+        // Ask the user for their name when they open the chat window
+        let userName = prompt("Please enter your name for the chat:", "Guest");
+        
+        // If they leave it blank or hit cancel, default to Guest
+        if (!userName || !userName.trim()) {
+            userName = "Guest";
+        }
     </script>
     
-    <!-- 3. The full link to your personal JavaScript file on GitHub -->
+    <!-- Your JavaScript logic -->
     <script src="https://cdn.jsdelivr.net/gh/vihaanb0715-alt/chat-assets@main/chat-logic.js"></script>
     
     <script>
