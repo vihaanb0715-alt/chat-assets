@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Beginner Live Chat</title>
+    
+    <!-- 1. The full link to your personal CSS file on GitHub -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vihaanb0715-alt/chat-assets@main/style.css">
+    
+    <!-- 2. The full link to the official Supabase tool (Do not change this link) -->
+    <script src="https://jsdelivr.net"></script>
+</head>
+<body>
+
+    <div class="chat-box">
+        <div id="messages"></div>
+        <div class="input-area">
+            <input type="text" id="msgInput" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Connect to your specific Supabase project
+        const supabaseClient = supabase.createClient('https://jcltdxcktlozphuhzaej.supabase.co', 'sb_publishable_UOhQfo-Myd8p_wTC9JdgOg_PUywAd7K');
+    </script>
+    
+    <!-- 3. The full link to your personal JavaScript file on GitHub -->
+    <script src="https://cdn.jsdelivr.net/gh/vihaanb0715-alt/chat-assets@main/chat-logic.js"></script>
+    
+    <script>
+        // Start listening for chat messages automatically when the page opens
+        startChatListening();
+    </script>
+</body>
+</html>
