@@ -33,12 +33,18 @@
         }
     </script>
     
-    <!-- Your JavaScript logic -->
-    <script src="https://cdn.jsdelivr.net/gh/vihaanb0715-alt/chat-assets@main/chatlogic.js"></script>
+        <!-- Your JavaScript logic (Updated version tag to bypass cache) -->
+    <script src="https://cdn.jsdelivr.net/gh/vihaanb0715-alt/chat-assets@main/chat-logic-2.js"></script>
     
     <script>
-        // Start listening for chat messages automatically when the page opens
+        // 1. First, pull the existing message history from the database
+        loadPastMessages();
+
+        // 2. Then, turn on the live listener to stream new incoming messages
         startChatListening();
     </script>
+</body>
+</html>
+
 </body>
 </html>
