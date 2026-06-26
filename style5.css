@@ -12,6 +12,7 @@ body {
     border-radius: 8px; 
     box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
     padding: 15px; 
+    box-sizing: border-box; /* Includes padding in total width calculation */
 } 
 
 #messages { 
@@ -24,12 +25,14 @@ body {
 
 .input-area { 
     display: flex; 
-    gap: 6px; 
-    align-items: center; /* Keeps everything perfectly centered on a single line */
+    gap: 4px; 
+    align-items: center; 
+    width: 100%;
 } 
 
 input { 
     flex: 1; 
+    min-width: 0; /* CRITICAL: Allows flexbox input to scale down nicely to fit the line */
     padding: 8px; 
     border: 1px solid #ccc; 
     border-radius: 4px;
@@ -37,10 +40,11 @@ input {
 } 
 
 button { 
+    flex-shrink: 0; /* CRITICAL: Stops buttons from bending or clipping out of bounds */
     background: #0084ff; 
     color: white; 
     border: none; 
-    padding: 8px 12px; 
+    padding: 8px 10px; 
     cursor: pointer; 
     border-radius: 4px;
     font-size: 14px;
@@ -48,11 +52,11 @@ button {
     white-space: nowrap;
 }
 
-/* Special styling for icon buttons (Emoji & Camera) to keep them compact */
+/* Special sizing for icon buttons to keep things beautifully proportioned */
 .icon-btn {
     background: #f0f2f5;
     color: #333;
-    padding: 8px 10px;
+    padding: 8px 6px;
     font-size: 16px;
 }
 
