@@ -25,13 +25,15 @@ body {
 .input-area { 
     display: flex; 
     gap: 5px; 
+    flex-wrap: wrap; /* Prevents overflow layout breaks if room gets tight */
 } 
 
 input { 
     flex: 1; 
     padding: 8px; 
-    border: 1px solid #ccc; /* Ensures a clean input border border outline */
+    border: 1px solid #ccc; /* Ensures a clean input border outline */
     border-radius: 4px;
+    min-width: 100px; /* Ensures text box doesn't squash down to zero width */
 } 
 
 button { 
@@ -41,6 +43,7 @@ button {
     padding: 8px 12px; 
     cursor: pointer; 
     border-radius: 4px;
+    white-space: nowrap; /* Keeps text inside the button on 1 line */
 }
 
 /* --- NEW ADDITIONS FOR IMAGE SHARING AND LOADING STATES --- */
@@ -73,4 +76,51 @@ button {
     0% { opacity: 0.5; }
     50% { opacity: 1; }
     100% { opacity: 0.5; }
+}
+
+/* --- ADD-ON STYLES FOR EMOJI POPUP & LIVE COUNTER --- */
+
+/* Styling for the user count display at the top left */
+#user-count {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #00FF00; /* Green text */
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+/* Floating Emoji Popup Styling */
+.emoji-popup {
+    display: none;
+    position: fixed; /* Hovers entirely above layout layers */
+    bottom: 70px;   /* Positions it floating right over the actions bar */
+    left: 50%;
+    transform: translateX(-50%); /* Centers horizontally across the frame */
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    max-width: 220px;
+    z-index: 9999; /* Higher layer index stays on top */
+}
+
+.emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.emoji-item {
+    font-size: 22px;
+    cursor: pointer;
+    text-align: center;
+    padding: 2px;
+    transition: transform 0.1s;
+}
+
+.emoji-item:hover {
+    transform: scale(1.2);
 }
