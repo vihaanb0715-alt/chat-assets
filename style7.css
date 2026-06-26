@@ -1,6 +1,6 @@
 body { 
     font-family: sans-serif; 
-    background: #f0f2f5; 
+    background: #121212; /* FIXED: Changed from light gray to dark gray background */
     display: flex; 
     justify-content: center; 
     padding: 20px; 
@@ -8,20 +8,33 @@ body {
 
 .chat-box { 
     width: 350px; 
-    background: white; 
+    background: #000000; /* FIXED: Changed chat box from white to pure black */
+    color: #ffffff; /* ADDED: Makes default text white */
     border-radius: 8px; 
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+    box-shadow: 0 2px 10px rgba(255,255,255,0.05); /* ADJUSTED: Soft white glow instead of dark shadow */
     padding: 15px; 
-    box-sizing: border-box; /* Crucial: Includes structural padding into layout measurements */
+    box-sizing: border-box; 
 } 
 
 #messages { 
     overflow-y: auto; 
-    border: 1px solid #ddd; 
+    border: 1px solid #333333; /* ADJUSTED: Darkened the border around the chat timeline */
+    background: #181818; /* ADDED: Slightly lighter dark background for the message area */
     padding: 10px; 
     margin-bottom: 10px; 
     height: 300px; 
 } 
+
+/* ADJUSTED: Styling to make text messages look good on dark backgrounds */
+#messages p {
+    margin: 8px 0;
+    line-height: 1.4;
+    color: #e0e0e0; /* Light gray text for standard messages */
+}
+
+#messages p b {
+    color: #ffffff; /* Pure white text for usernames */
+}
 
 .input-area { 
     display: flex; 
@@ -32,15 +45,22 @@ body {
 
 input { 
     flex: 1; 
-    min-width: 0; /* Crucial: Allows text field to compress elegantly without throwing buttons out */
+    min-width: 0; 
     padding: 8px; 
-    border: 1px solid #ccc; 
+    background: #222222; /* ADDED: Dark input field background */
+    color: #ffffff; /* ADDED: White text when typing */
+    border: 1px solid #444444; /* ADJUSTED: Darker border for the text input */
     border-radius: 4px;
     font-size: 14px;
 } 
 
+/* Changes the placeholder text ("Type a message...") color to a muted gray */
+input::placeholder {
+    color: #888888;
+}
+
 button { 
-    flex-shrink: 0; /* Prevents button squeezing artifacts on narrow windows */
+    flex-shrink: 0; 
     background: #0084ff; 
     color: white; 
     border: none; 
@@ -52,16 +72,16 @@ button {
     white-space: nowrap;
 }
 
-/* Styled specific icon triggers to fit inline seamlessly */
+/* Styled specific icon triggers to fit inline seamlessly on dark theme */
 .icon-btn {
-    background: #f0f2f5;
-    color: #333;
+    background: #222222; /* ADJUSTED: Darkened icon button backgrounds */
+    color: #ffffff; 
     padding: 8px 6px;
     font-size: 16px;
 }
 
 .icon-btn:hover {
-    background: #e4e6eb;
+    background: #333333; /* ADJUSTED: Darker hover state background */
 }
 
 /* --- IMAGE SHARING AND LOADING STATES --- */
@@ -72,16 +92,11 @@ button {
     border-radius: 6px;
     margin-top: 5px;
     display: block;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-}
-
-#messages p {
-    margin: 8px 0;
-    line-height: 1.4;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 
 #messages p[id^="loading-"] {
-    color: #777777;
+    color: #aaaaaa; /* ADJUSTED: Lightened loader text color for contrast */
     font-style: italic;
     animation: chatLoadingPulse 1.5s infinite ease-in-out;
 }
@@ -98,7 +113,7 @@ button {
     position: absolute;
     top: 10px;
     left: 10px;
-    color: #00FF00; /* Green label output */
+    color: #00FF00; /* Stays bright neon green */
     font-family: Arial, sans-serif;
     font-weight: bold;
     z-index: 1000;
@@ -106,15 +121,15 @@ button {
 
 .emoji-popup {
     display: none;
-    position: fixed; /* Hovers entirely free of the input box dimensions */
+    position: fixed; 
     bottom: 65px;   
     left: 50%;
     transform: translateX(-50%); 
-    background: white;
-    border: 1px solid #ccc;
+    background: #222222; /* FIXED: Changed the emoji drawer background to dark */
+    border: 1px solid #444444; /* ADJUSTED: Darker border for the drawer */
     border-radius: 8px;
     padding: 10px;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
     max-width: 220px;
     z-index: 9999; 
 }
