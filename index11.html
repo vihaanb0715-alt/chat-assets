@@ -1,0 +1,111 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <title>Live Chat</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vihaanb0715-alt/chat-assets@main/style7.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div id="user-count">Current Users: <span id="count-number">1</span></div>
+
+    <div class="chat-box">
+        <div id="messages"><p><b>Guest:</b> test test</p><p><b>vihaan:</b> hello</p><p><b>vihaan:</b><br><img src="https://jcltdxcktlozphuhzaej.supabase.co/storage/v1/object/public/chat-images/1782247037476-d2tb6kf.svg" style="max-width: 200px; max-height: 200px; border-radius: 8px; margin-top: 5px; display: block;"></p><p><b>Vihaan:</b> hello</p><p><b>Payal:</b> Hello </p></div>
+        
+        <div id="emojiPopup" class="emoji-popup">
+            <div class="emoji-grid" id="emojiGrid"></div>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="msgInput" placeholder="Type a message...">
+            
+            <input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="uploadAndSendFile()">
+            
+            <button class="icon-btn" onclick="toggleEmojiPopup(event)" title="Add Emoji">😀</button>
+
+            <button class="icon-btn" onclick="document.getElementById('fileInput').click()" title="Add Picture">📷</button>
+            
+            <button id="sendBtn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Connect to your specific Supabase project
+        const supabaseClient = supabase.createClient('https://jcltdxcktlozphuhzaej.supabase.co', 'sb_publishable_UOhQfo-Myd8p_wTC9JdgOg_PUywAd7K');
+
+        // Ask the user for their name when they open the chat window
+        let userName = prompt("Please enter your name for the chat:", "Guest");
+
+        if (!userName || !userName.trim()) {
+            userName = "Guest";
+        }
+
+        alert("Hello, and welcome to the live chat, " + userName + "! Please follow our Terms & Conditions here: https://bit.ly/chat-terms-and-conditions");
+        alert("Have fun, " + userName + "!");
+
+        // --- EMOJI POPUP PICKER LOGIC ---
+        const emojis = [
+            "😀", "😂", "🤣", "😊", "👍", "🔥", "🎉", "❤️", "👀", "🚀", 
+            "✨", "💯", "😎", "🤔", "😢", "🙌", "👏", "💩", "🥳", "👋"
+        ];
+
+        const emojiGrid = document.getElementById('emojiGrid');
+        const emojiPopup = document.getElementById('emojiPopup');
+
+        // Build the emoji selectors dynamically
+        emojis.forEach(emoji => {
+            const span = document.createElement('span');
+            span.className = 'emoji-item';
+            span.innerText = emoji;
+            span.onclick = function() {
+                const msgInput = document.getElementById('msgInput');
+                msgInput.value += emoji;
+                msgInput.focus();
+                emojiPopup.style.display = 'none'; 
+            };
+            emojiGrid.appendChild(span);
+        });
+
+        function toggleEmojiPopup(event) {
+            event.stopPropagation(); // Stops popup from closing instantly on click
+            if (emojiPopup.style.display === 'block') {
+                emojiPopup.style.display = 'none';
+            } else {
+                emojiPopup.style.display = 'block';
+            }
+        }
+
+        // Close popup automatically if user clicks on the chat area or background
+        document.addEventListener('click', function() {
+            emojiPopup.style.display = 'none';
+        });
+
+        // --- REAL-TIME SUPABASE PRESENCE (LIVE COUNTER) ---
+        const presenceChannel = supabaseClient.channel('online-users', {
+            config: { presence: { key: userName } }
+        });
+
+        presenceChannel
+            .on('presence', { event: 'sync' }, () => {
+                const state = presenceChannel.presenceState();
+                // Count how many unique clients are connected to this channel right now
+                const onlineCount = Object.keys(state).length;
+                document.getElementById('count-number').innerText = Math.max(onlineCount, 1);
+            })
+            .subscribe(async (status) => {
+                if (status === 'SUBSCRIBED') {
+                    // Announce yourself to the presence channel sync group
+                    await presenceChannel.track({ online_at: new Date().toISOString() });
+                }
+            });
+
+        // Force an instant disconnect announcement the moment the tab is closed or left
+        window.addEventListener('beforeunload', () => {
+            presenceChannel.untrack();
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/gh/vihaanb0715-alt/chat-assets@main/chat-logic-4.js"></script>
+    <script>
+        loadPastMessages();
+        startChatListening();
+    </script>
+</body></html>
