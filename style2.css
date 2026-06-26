@@ -11,8 +11,7 @@ body {
     background: white; 
     border-radius: 8px; 
     box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
-    padding: 15px 15px 10px 15px; /* TIGHTENED: Reduced bottom padding from 15px to 10px */
-    height: auto; /* FORCED: Tells the box wrapper to snugly fit whatever height its inner elements need */
+    padding: 15px; 
 } 
 
 #messages { 
@@ -27,7 +26,6 @@ body {
     display: flex; 
     gap: 5px; 
     flex-wrap: wrap; /* Prevents overflow layout breaks if room gets tight */
-    align-items: center; /* ALIGNED: Keeps inputs and elements centered on their lines */
 } 
 
 input { 
@@ -35,7 +33,7 @@ input {
     padding: 8px; 
     border: 1px solid #ccc; /* Ensures a clean input border outline */
     border-radius: 4px;
-    min-width: 120px; /* TWEAKED: Slightly increased to give your typing box a healthy minimum line size */
+    min-width: 100px; /* Ensures text box doesn't squash down to zero width */
 } 
 
 button { 
