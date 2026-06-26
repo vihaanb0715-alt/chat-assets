@@ -19,21 +19,21 @@ body {
     border: 1px solid #ddd; 
     padding: 10px; 
     margin-bottom: 10px; 
-    height: 300px; /* Fixed your original typo: 'hieght' */
+    height: 300px; 
 } 
 
 .input-area { 
     display: flex; 
-    gap: 5px; 
-    flex-wrap: wrap; /* Prevents overflow layout breaks if room gets tight */
+    gap: 6px; 
+    align-items: center; /* Keeps everything perfectly centered on a single line */
 } 
 
 input { 
     flex: 1; 
     padding: 8px; 
-    border: 1px solid #ccc; /* Ensures a clean input border outline */
+    border: 1px solid #ccc; 
     border-radius: 4px;
-    min-width: 100px; /* Ensures text box doesn't squash down to zero width */
+    font-size: 14px;
 } 
 
 button { 
@@ -43,12 +43,25 @@ button {
     padding: 8px 12px; 
     cursor: pointer; 
     border-radius: 4px;
-    white-space: nowrap; /* Keeps text inside the button on 1 line */
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
-/* --- NEW ADDITIONS FOR IMAGE SHARING AND LOADING STATES --- */
+/* Special styling for icon buttons (Emoji & Camera) to keep them compact */
+.icon-btn {
+    background: #f0f2f5;
+    color: #333;
+    padding: 8px 10px;
+    font-size: 16px;
+}
 
-/* Style for chat images to ensure they stay constrained within the box wrapper */
+.icon-btn:hover {
+    background: #e4e6eb;
+}
+
+/* --- IMAGE SHARING AND LOADING STATES --- */
+
 #messages img {
     max-width: 100%;
     height: auto;
@@ -58,53 +71,48 @@ button {
     box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
 
-/* Subtle styling for paragraph elements containing images */
 #messages p {
     margin: 8px 0;
     line-height: 1.4;
 }
 
-/* Styling for the temporary loading indicator message card */
 #messages p[id^="loading-"] {
     color: #777777;
     font-style: italic;
     animation: chatLoadingPulse 1.5s infinite ease-in-out;
 }
 
-/* Smooth pulsing fade effect for the upload process text */
 @keyframes chatLoadingPulse {
     0% { opacity: 0.5; }
     50% { opacity: 1; }
     100% { opacity: 0.5; }
 }
 
-/* --- ADD-ON STYLES FOR EMOJI POPUP & LIVE COUNTER --- */
+/* --- EMOJI POPUP & LIVE COUNTER --- */
 
-/* Styling for the user count display at the top left */
 #user-count {
     position: absolute;
     top: 10px;
     left: 10px;
-    color: #00FF00; /* Green text */
+    color: #00FF00; 
     font-family: Arial, sans-serif;
     font-weight: bold;
     z-index: 1000;
 }
 
-/* Floating Emoji Popup Styling */
 .emoji-popup {
     display: none;
-    position: fixed; /* Hovers entirely above layout layers */
-    bottom: 70px;   /* Positions it floating right over the actions bar */
+    position: fixed; 
+    bottom: 65px;   
     left: 50%;
-    transform: translateX(-50%); /* Centers horizontally across the frame */
+    transform: translateX(-50%); 
     background: white;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 10px;
     box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
     max-width: 220px;
-    z-index: 9999; /* Higher layer index stays on top */
+    z-index: 9999; 
 }
 
 .emoji-grid {
