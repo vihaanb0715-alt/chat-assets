@@ -12,7 +12,7 @@ body {
     border-radius: 8px; 
     box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
     padding: 15px; 
-    box-sizing: border-box; /* Includes padding in total width calculation */
+    box-sizing: border-box; /* Crucial: Includes structural padding into layout measurements */
 } 
 
 #messages { 
@@ -26,13 +26,13 @@ body {
 .input-area { 
     display: flex; 
     gap: 4px; 
-    align-items: center; 
+    align-items: center;
     width: 100%;
 } 
 
 input { 
     flex: 1; 
-    min-width: 0; /* CRITICAL: Allows flexbox input to scale down nicely to fit the line */
+    min-width: 0; /* Crucial: Allows text field to compress elegantly without throwing buttons out */
     padding: 8px; 
     border: 1px solid #ccc; 
     border-radius: 4px;
@@ -40,11 +40,11 @@ input {
 } 
 
 button { 
-    flex-shrink: 0; /* CRITICAL: Stops buttons from bending or clipping out of bounds */
+    flex-shrink: 0; /* Prevents button squeezing artifacts on narrow windows */
     background: #0084ff; 
     color: white; 
     border: none; 
-    padding: 8px 10px; 
+    padding: 8px 12px; 
     cursor: pointer; 
     border-radius: 4px;
     font-size: 14px;
@@ -52,7 +52,7 @@ button {
     white-space: nowrap;
 }
 
-/* Special sizing for icon buttons to keep things beautifully proportioned */
+/* Styled specific icon triggers to fit inline seamlessly */
 .icon-btn {
     background: #f0f2f5;
     color: #333;
@@ -92,13 +92,13 @@ button {
     100% { opacity: 0.5; }
 }
 
-/* --- EMOJI POPUP & LIVE COUNTER --- */
+/* --- ADDITIONS FOR LIVE USER DISPLAY AND FLOATING EMOJIS --- */
 
 #user-count {
     position: absolute;
     top: 10px;
     left: 10px;
-    color: #00FF00; 
+    color: #00FF00; /* Green label output */
     font-family: Arial, sans-serif;
     font-weight: bold;
     z-index: 1000;
@@ -106,7 +106,7 @@ button {
 
 .emoji-popup {
     display: none;
-    position: fixed; 
+    position: fixed; /* Hovers entirely free of the input box dimensions */
     bottom: 65px;   
     left: 50%;
     transform: translateX(-50%); 
