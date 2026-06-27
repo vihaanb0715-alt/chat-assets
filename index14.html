@@ -21,7 +21,7 @@
             
             <button class="icon-btn" onclick="toggleEmojiPopup(event)" title="Add Emoji">😀</button>
 
-            <button class="icon-btn" onclick="document.getElementById('fileInput').click()" title="Add Picture">📷</button>
+            <button class="icon-btn" onclick="document.getElementById('fileInput').click()" title="Add Picture">Add Image</button>
             
             <button id="sendBtn" onclick="sendMessage()">Send</button>
         </div>
@@ -32,7 +32,7 @@
         const supabaseClient = supabase.createClient('https://jcltdxcktlozphuhzaej.supabase.co', 'sb_publishable_UOhQfo-Myd8p_wTC9JdgOg_PUywAd7K');
 
         // Ask the user for their name when they open the chat window
-        let userName = prompt("Please enter your name for the chat:", "Guest");
+        let userName = prompt("Please enter your name here for the chat:", "Guest");
 
         if (!userName || !userName.trim()) {
             userName = "Guest";
